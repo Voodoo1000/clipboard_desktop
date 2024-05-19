@@ -1,0 +1,51 @@
+﻿<Window x:Class="test.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Авторизация" Height="300" Width="300"
+        Background="#1e1e1e"    
+        WindowStartupLocation="CenterScreen" Icon="/Logo.png">
+    <Grid Width="220" Height="250">
+        <Grid.Resources>
+            <Style TargetType="Button">
+                <Setter Property="Cursor" Value="Hand"/>
+            </Style>
+        </Grid.Resources>
+        <TextBlock HorizontalAlignment="Center" Margin="0,21,0,0" TextWrapping="Wrap" Text="clipboard" VerticalAlignment="Top" Foreground="White" Height="42" Width="150" FontSize="35" FontFamily="Microsoft Sans Serif" FontWeight="Bold"/>
+        <TextBox x:Name="login" Height="20" Background="{x:Null}" BorderThickness="0,0,0,1" BorderBrush="#FF01477E" Foreground="White" FontSize="14" FontFamily="Microsoft Sans Serif" CaretBrush="White" Margin="0,88,0,142"/>
+        <TextBlock IsHitTestVisible="False" FontSize="14" Text="логин" Height="20" Margin="0,88,0,142" Foreground="#FF6A6767" Padding="10,0,0,0" FontFamily="Microsoft Sans Serif">
+            <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Text, ElementName=login}" Value="">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+        <TextBox x:Name="pass" Height="20" Background="{x:Null}" BorderThickness="0,0,0,1" BorderBrush="#FF01477E" Foreground="White" FontSize="14" FontFamily="Microsoft Sans Serif" CaretBrush="White" Margin="0,115,0,115"/>
+        <TextBlock IsHitTestVisible="False" FontSize="14" Text="пароль" Height="20" Margin="0,115,0,115" Foreground="#FF6A6767" Padding="10,0,0,0" FontFamily="Microsoft Sans Serif">
+            <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Text, ElementName=pass}" Value="">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+        <Button Width="200" Height="30" Margin="10,150,10,70" BorderBrush="Black"  Click="LoginButton_Click">
+            <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Background="#FF0070B5" BorderBrush="Black" BorderThickness="1" CornerRadius="4">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+            <TextBlock Text="Войти" FontSize="16" FontFamily="Microsoft Sans Serif" HorizontalAlignment="Center"/>
+        </Button>
+    </Grid>
+</Window>

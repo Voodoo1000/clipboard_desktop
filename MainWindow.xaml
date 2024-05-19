@@ -1,0 +1,167 @@
+﻿<Window x:Class="test.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:test"
+        mc:Ignorable="d"
+        WindowStartupLocation="Manual"
+        Title="clipboard" Height="520" Width="420"
+        Background="#1e1e1e" Icon="/Logo.png" FontFamily="Microsoft Sans Serif">
+    <Window.Resources>
+
+        <ControlTemplate x:Key="ContentBlockTemplate" TargetType="ContentControl">
+            <Border Margin="5" Padding="10" BorderBrush="Black" BorderThickness="1" CornerRadius="5" Background="#FF545454" Height="72" Width="393">
+                <Grid>
+                    <ContentPresenter Content="{TemplateBinding Content}" VerticalAlignment="Top" />
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                        <Button Width="20" Height="20" BorderThickness="0" Background="Transparent" Cursor="Hand">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </ControlTemplate>
+                            </Button.Template>
+                            <Image Source="/copy.png"/>
+                        </Button>
+                        <Button Width="20" Height="20" Margin="10,0,0,0" BorderThickness="0" Background="Transparent" Cursor="Hand">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </ControlTemplate>
+                            </Button.Template>
+                            <Image Source="/delete.png"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </ControlTemplate>
+        <DataTemplate x:Key="TextContentTemplate">
+            <StackPanel>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <StackPanel>
+                        <ContentControl Template="{StaticResource ContentBlockTemplate}">
+                            <TextBlock Text="Cкопированный текст" FontFamily="Microsoft Sans Serif" Foreground="#FFE5E5E5" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
+                        </ContentControl>
+                        <!-- Дополнительные блоки с таким же шаблоном -->
+                    </StackPanel>
+                </ScrollViewer>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ImageContentTemplate">
+            <StackPanel>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <StackPanel>
+                        <ContentControl Template="{StaticResource ContentBlockTemplate}">
+                            <TextBlock Text="Изображение" FontFamily="Microsoft Sans Serif" Foreground="#FFE5E5E5" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
+                        </ContentControl>
+                        <!-- Дополнительные блоки с таким же шаблоном -->
+                    </StackPanel>
+                </ScrollViewer>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="FileContentTemplate">
+            <StackPanel>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <StackPanel>
+                        <ContentControl Template="{StaticResource ContentBlockTemplate}">
+                            <TextBlock Text="Файл" FontFamily="Microsoft Sans Serif" Foreground="#FFE5E5E5" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
+                        </ContentControl>
+                        <!-- Дополнительные блоки с таким же шаблоном -->
+                    </StackPanel>
+                </ScrollViewer>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.Resources>
+            <Style TargetType="Button">
+                <Setter Property="Cursor" Value="Hand"/>
+            </Style>
+        </Grid.Resources>
+        
+        <!-- Топ панель с кнопками -->
+        <Grid Grid.Row="0" Margin="0,9,0,0" Height="75">
+            <Button Width="80" Height="35" Click="TextButton_Click" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="50,0,0,0">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="#FF0070B5" BorderBrush="Black" BorderThickness="1" CornerRadius="18">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+                <TextBlock Text="Text" FontSize="16"/>
+            </Button>
+            <Button Width="80" Height="35" HorizontalAlignment="Center" VerticalAlignment="Center" Click="ImageButton_Click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="#FF0070B5" BorderBrush="Black" BorderThickness="1" CornerRadius="18">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+                <TextBlock Text="Image" FontSize="16"/>
+            </Button>
+            <Button Width="80" Height="35" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,50,0" Click="FileButton_Click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="#FF0070B5" BorderBrush="Black" BorderThickness="1" CornerRadius="18">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+                <TextBlock Text="File" FontSize="16"/>
+            </Button>
+        </Grid>
+
+        <!-- ContentControl для отображения контента -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+            <ContentControl x:Name="contentControl" ContentTemplate="{StaticResource TextContentTemplate}" />
+        </ScrollViewer>
+
+        <!-- Нижняя панель -->
+        <Grid Grid.Row="2" Height="77" Background="#FF383838">
+            <Button x:Name="LogoutButton" Width="50" Height="50" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="30,0,0,0" Grid.Row="1" BorderThickness="0" Background="Transparent" Click="LogoutButton_Click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="Transparent" BorderBrush="Black" BorderThickness="0" CornerRadius="30">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="MouseOver"/>
+                                    <!-- Отключаем любые визуальные изменения для состояния нажатия -->
+                                    <VisualState x:Name="Pressed"/>
+                                    <VisualState x:Name="Disabled"/>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+                <Image Source="/exit.png" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="2,0,0,0"/>
+            </Button>
+
+
+            <!-- Кнопка загрузки файла -->
+            <Button Width="120" Height="50" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Margin="0,0,30,0" FontFamily="Microsoft Sans Serif" Click="UploadFileButton_Click">
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="#FF0070B5" BorderBrush="Black" BorderThickness="1" CornerRadius="25">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+                <TextBlock Text="Upload File" FontSize="16"/>
+            </Button>
+
+        </Grid>
+    </Grid>
+</Window>
