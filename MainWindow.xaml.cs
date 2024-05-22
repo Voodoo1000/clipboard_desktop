@@ -302,6 +302,7 @@ namespace test
                 if (response.IsSuccessStatusCode)
                 {
                     MessageBox.Show("Текстовый файл успешно отправлен");
+                    TextInput.Text = "";
                 }
                 else
                 {
