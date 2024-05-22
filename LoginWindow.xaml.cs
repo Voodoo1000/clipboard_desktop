@@ -27,7 +27,7 @@ namespace test
                 if (!string.IsNullOrEmpty(response.AccessToken))
                 {
                     // Успешная аутентификация, открыть главное окно
-                    MainWindow mainWindow = new MainWindow();
+                    MainWindow mainWindow = new MainWindow(response.AccessToken);
                     mainWindow.Show();
                     this.Close();
                 }

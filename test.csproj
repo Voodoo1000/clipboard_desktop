@@ -11,15 +11,27 @@
   <ItemGroup>
     <None Remove="copy.png" />
     <None Remove="delete.png" />
+    <None Remove="download.png" />
     <None Remove="exit.png" />
     <None Remove="Logo.png" />
+    <None Remove="Resources\copy.png" />
+    <None Remove="Resources\delete.png" />
+    <None Remove="Resources\download.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="copy.png" />
     <Resource Include="delete.png" />
+    <Resource Include="download.png" />
     <Resource Include="exit.png" />
     <Resource Include="Logo.png" />
+    <Resource Include="Resources\copy.png" />
+    <Resource Include="Resources\delete.png" />
+    <Resource Include="Resources\download.png" />
   </ItemGroup>
 
 </Project>

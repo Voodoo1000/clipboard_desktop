@@ -8,71 +8,18 @@
         WindowStartupLocation="Manual"
         Title="clipboard" Height="520" Width="420"
         Background="#1e1e1e" Icon="/Logo.png" FontFamily="Microsoft Sans Serif">
+
     <Window.Resources>
-
-        <ControlTemplate x:Key="ContentBlockTemplate" TargetType="ContentControl">
-            <Border Margin="5" Padding="10" BorderBrush="Black" BorderThickness="1" CornerRadius="5" Background="#FF545454" Height="72" Width="393">
-                <Grid>
-                    <ContentPresenter Content="{TemplateBinding Content}" VerticalAlignment="Top" />
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                        <Button Width="20" Height="20" BorderThickness="0" Background="Transparent" Cursor="Hand">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </ControlTemplate>
-                            </Button.Template>
-                            <Image Source="/copy.png"/>
-                        </Button>
-                        <Button Width="20" Height="20" Margin="10,0,0,0" BorderThickness="0" Background="Transparent" Cursor="Hand">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </ControlTemplate>
-                            </Button.Template>
-                            <Image Source="/delete.png"/>
-                        </Button>
-                    </StackPanel>
-                </Grid>
-            </Border>
-        </ControlTemplate>
-        <DataTemplate x:Key="TextContentTemplate">
-            <StackPanel>
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalAlignment="Center" VerticalAlignment="Top">
-                    <StackPanel>
-                        <ContentControl Template="{StaticResource ContentBlockTemplate}">
-                            <TextBlock Text="Cкопированный текст" FontFamily="Microsoft Sans Serif" Foreground="#FFE5E5E5" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
-                        </ContentControl>
-                        <!-- Дополнительные блоки с таким же шаблоном -->
-                    </StackPanel>
-                </ScrollViewer>
-            </StackPanel>
-        </DataTemplate>
-
-        <DataTemplate x:Key="ImageContentTemplate">
-            <StackPanel>
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalAlignment="Center" VerticalAlignment="Top">
-                    <StackPanel>
-                        <ContentControl Template="{StaticResource ContentBlockTemplate}">
-                            <TextBlock Text="Изображение" FontFamily="Microsoft Sans Serif" Foreground="#FFE5E5E5" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
-                        </ContentControl>
-                        <!-- Дополнительные блоки с таким же шаблоном -->
-                    </StackPanel>
-                </ScrollViewer>
-            </StackPanel>
-        </DataTemplate>
-
-        <DataTemplate x:Key="FileContentTemplate">
-            <StackPanel>
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalAlignment="Center" VerticalAlignment="Top">
-                    <StackPanel>
-                        <ContentControl Template="{StaticResource ContentBlockTemplate}">
-                            <TextBlock Text="Файл" FontFamily="Microsoft Sans Serif" Foreground="#FFE5E5E5" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
-                        </ContentControl>
-                        <!-- Дополнительные блоки с таким же шаблоном -->
-                    </StackPanel>
-                </ScrollViewer>
-            </StackPanel>
-        </DataTemplate>
+        <Style x:Key="IconButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Width" Value="20"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
     </Window.Resources>
 
     <Grid>
@@ -87,7 +34,7 @@
                 <Setter Property="Cursor" Value="Hand"/>
             </Style>
         </Grid.Resources>
-        
+
         <!-- Топ панель с кнопками -->
         <Grid Grid.Row="0" Margin="0,9,0,0" Height="75">
             <Button Width="80" Height="35" Click="TextButton_Click" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="50,0,0,0">
@@ -122,9 +69,17 @@
             </Button>
         </Grid>
 
-        <!-- ContentControl для отображения контента -->
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
-            <ContentControl x:Name="contentControl" ContentTemplate="{StaticResource TextContentTemplate}" />
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" x:Name="TextScrollViewer" Visibility="Visible">
+            <!-- Контейнер для текстовых файлов -->
+            <WrapPanel x:Name="TextFilesPanel" Orientation="Horizontal" Grid.Row="1"/>
+        </ScrollViewer>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" x:Name="ImageScrollViewer" Visibility="Collapsed" >
+            <!-- Контейнер для изображений -->
+            <WrapPanel x:Name="ImageFilesPanel" Orientation="Horizontal" Grid.Row="1"/>
+        </ScrollViewer>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" x:Name="OtherScrollViewer" Visibility="Collapsed">
+            <!-- Контейнер для других файлов -->
+            <WrapPanel x:Name="OtherFilesPanel" Orientation="Horizontal" Grid.Row="1"/>
         </ScrollViewer>
 
         <!-- Нижняя панель -->
@@ -151,7 +106,7 @@
 
 
             <!-- Кнопка загрузки файла -->
-            <Button Width="120" Height="50" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Margin="0,0,30,0" FontFamily="Microsoft Sans Serif" Click="UploadFileButton_Click">
+            <Button x:Name="UploadFileButton" Width="120" Height="50" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Margin="0,0,30,0" FontFamily="Microsoft Sans Serif" Click="UploadFileButton_Click" Visibility="Collapsed">
                 <Button.Template>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Border Background="#FF0070B5" BorderBrush="Black" BorderThickness="1" CornerRadius="25">
@@ -162,6 +117,31 @@
                 <TextBlock Text="Upload File" FontSize="16"/>
             </Button>
 
+            <!-- Текстовое поле и кнопка отправки текста -->
+            <TextBox x:Name="TextInput" Height="20" TextChanged="TextInput_TextChanged" Background="{x:Null}" BorderThickness="0,0,0,1" BorderBrush="White" Foreground="White" FontSize="14" FontFamily="Microsoft Sans Serif" CaretBrush="White" HorizontalAlignment="Left" VerticalAlignment="Top" Width="210" Margin="100,34,0,0"/>
+            <TextBlock x:Name="txt" IsHitTestVisible="False" FontSize="14" Text="Input text..." Height="20" Foreground="#FF6A6767" Padding="10,0,0,0" FontFamily="Microsoft Sans Serif" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,34,0,0">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Text, ElementName=TextInput}" Value="">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+            <Button x:Name="SendTextButton" Click="SendTextButton_Click" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,20,0" FontFamily="Microsoft Sans Serif" Width="75" Height="40">
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="#FF0070B5" BorderBrush="Black" BorderThickness="1" CornerRadius="18">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+                <TextBlock Text="Send text" FontSize="14"/>
+            </Button>
         </Grid>
     </Grid>
 </Window>
